@@ -5,7 +5,8 @@ import Settings from "@/components/Settings";
 import useSettings from "@/hooks/useSettings";
 
 function App() {
-  const [value, setValue] = useState("");
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState(input);
   const [colors, setColors] = useState<string[]>([]);
   const { settings, setSettingsValue } = useSettings();
 
@@ -23,7 +24,7 @@ function App() {
   };
 
   useEffect(() => {
-    const svgString = sanitizeSvg(value);
+    const svgString = sanitizeSvg(output);
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
     const elements = svgDoc.querySelectorAll("*");
@@ -37,7 +38,7 @@ function App() {
     });
 
     setColors([...new Set(fillColors)]);
-  }, [value]);
+  }, [output]);
 
   return (
     <div className="flex flex-col items-center justify-start w-full min-h-screen bg-primary/90">
@@ -46,15 +47,18 @@ function App() {
         className={`grid ${settings.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
       >
         <textarea
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setOutput(e.target.value);
+          }}
           spellCheck={false}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
         />
         <textarea
           value={
             settings.format
-              ? beautify.html(sanitizeSvg(value), { indent_size: 4 })
-              : sanitizeSvg(value)
+              ? beautify.html(sanitizeSvg(output), { indent_size: 4 })
+              : sanitizeSvg(output)
           }
           spellCheck={false}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none"
@@ -63,15 +67,16 @@ function App() {
         {settings.preview && (
           <div
             className="flex items-center justify-center bg-white rounded-xl p-8"
-            dangerouslySetInnerHTML={{ __html: sanitizeSvg(value) }}
+            dangerouslySetInnerHTML={{ __html: sanitizeSvg(output) }}
           />
         )}
       </div>
       <ColorBar
         colors={colors}
         onChange={(oldColor: string, newColor: string) =>
-          setValue(value.replace(new RegExp(oldColor, "g"), newColor))
+          setOutput(output.replace(new RegExp(oldColor, "g"), newColor))
         }
+        onReset={() => setOutput(input)}
       />
     </div>
   );

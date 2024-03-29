@@ -5,9 +5,10 @@ import { HexColorPicker } from "react-colorful";
 type ColorBarProps = {
   colors: string[];
   onChange: (oldColor: string, newColor: string) => void;
+  onReset: () => void;
 };
 
-const ColorBar = ({ colors, onChange }: ColorBarProps) => {
+const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
   const [active, setActive] = useState(-1);
 
   const handleColorBoxClick = useCallback((idx: number) => {
@@ -18,16 +19,19 @@ const ColorBar = ({ colors, onChange }: ColorBarProps) => {
     setActive(-1);
   }, []);
 
+  if (!(colors.length > 0)) {
+    return <></>;
+  }
+
   return (
-    <div className="fixed flex flex-row w-auto h-auto bottom-4 mx-auto bg-white rounded">
+    <div className="fixed flex flex-row w-auto h-auto bottom-4 mx-auto bg-white rounded items-center gap-4 p-4">
       {colors.map((c, idx) => (
-        <div className="flex-auto p-4" key={idx}>
-          <div
-            className="h-8 w-8 border border-black rounded flex flex-column"
+        <div className="" key={idx}>
+          <Button
+            className="w-8 h-8 border border-black"
             style={{ background: c }}
             onClick={() => handleColorBoxClick(idx)}
-            tabIndex={0}
-          ></div>
+          />
           {active === idx && (
             <div className="absolute bottom-[120%]">
               <Button
@@ -45,6 +49,7 @@ const ColorBar = ({ colors, onChange }: ColorBarProps) => {
           )}
         </div>
       ))}
+      <Button onClick={onReset}>Reset colors</Button>
     </div>
   );
 };
