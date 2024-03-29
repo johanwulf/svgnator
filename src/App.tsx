@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import beautify from "js-beautify";
-import "./App.css";
-import ColorBar from "./components/ColorBar";
-import useConfig from "./hooks/useConfig";
-import Settings from "./components/Settings";
+import ColorBar from "@/components/ColorBar";
+import Settings from "@/components/Settings";
+import useSettings from "@/hooks/useSettings";
 
 function App() {
   const [value, setValue] = useState("");
   const [colors, setColors] = useState<string[]>([]);
-  const { config, setConfigValue } = useConfig();
+  const { settings, setSettingsValue } = useSettings();
 
   const sanitizeSvg = (svg: string) => {
     if (svg.length === 0) return "";
@@ -42,9 +41,9 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-start w-full min-h-screen bg-primary/90">
-      <Settings config={config} setConfigValue={setConfigValue} />
+      <Settings settings={settings} setSettingsValue={setSettingsValue} />
       <div
-        className={`grid ${config.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
+        className={`grid ${settings.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
       >
         <textarea
           onChange={(e) => setValue(e.target.value)}
@@ -53,7 +52,7 @@ function App() {
         />
         <textarea
           value={
-            config.format
+            settings.format
               ? beautify.html(sanitizeSvg(value), { indent_size: 4 })
               : sanitizeSvg(value)
           }
@@ -61,7 +60,7 @@ function App() {
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none"
           readOnly
         />
-        {config.preview && (
+        {settings.preview && (
           <div
             className="flex items-center justify-center bg-white rounded-xl p-8"
             dangerouslySetInnerHTML={{ __html: sanitizeSvg(value) }}

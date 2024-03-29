@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type Config = {
+export type Settings = {
   format: boolean;
   removeIds: boolean;
   removeClasses: boolean;
@@ -9,8 +9,8 @@ export type Config = {
   react: boolean;
 };
 
-const useConfig = () => {
-  const [config, setConfig] = useState<Config>({
+const useSettings = () => {
+  const [settings, setSettings] = useState<Settings>({
     format: true,
     removeIds: true,
     removeClasses: true,
@@ -19,14 +19,14 @@ const useConfig = () => {
     react: true,
   });
 
-  const setConfigValue = (key: keyof Config, value: boolean) => {
-    setConfig((prevConfig) => ({ ...prevConfig, [key]: value }));
+  const setSettingsValue = (key: keyof Settings, value: boolean) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   return {
-    config,
-    setConfigValue,
+    settings,
+    setSettingsValue,
   };
 };
 
-export default useConfig;
+export default useSettings;

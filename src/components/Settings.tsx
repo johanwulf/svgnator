@@ -1,13 +1,13 @@
-import { Config } from "@/hooks/useConfig";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
+import { Settings as S } from "@/hooks/useSettings";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type SettingsProps = {
-  config: Config;
-  setConfigValue: (key: keyof Config, value: boolean) => void;
+  settings: S;
+  setSettingsValue: (key: keyof S, value: boolean) => void;
 };
 
-const CONFIG_LABEL_MAP: Record<keyof Config, string> = {
+const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
   format: "Format code",
   preview: "Preview SVG",
   react: "React component",
@@ -16,19 +16,19 @@ const CONFIG_LABEL_MAP: Record<keyof Config, string> = {
   removeIds: "Remove IDs",
 };
 
-const Settings = ({ config, setConfigValue }: SettingsProps) => {
+const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
   return (
     <nav className="flex flex-row gap-8 p-4 w-full">
-      {Object.entries(config).map(([key, value]) => (
+      {Object.entries(settings).map(([key, value]) => (
         <div className="flex items-center space-x-2" key={key}>
           <Switch
             id={key}
             className="dark"
-            onCheckedChange={(val) => setConfigValue(key as keyof Config, val)}
+            onCheckedChange={(val) => setSettingsValue(key as keyof S, val)}
             checked={value}
           />
           <Label htmlFor={key} className="text-primary-foreground">
-            {CONFIG_LABEL_MAP[key as keyof Config]}
+            {SETTINGS_LABEL_MAP[key as keyof S]}
           </Label>
         </div>
       ))}
