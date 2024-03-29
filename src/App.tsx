@@ -58,6 +58,14 @@ function App() {
   const { settings, setSettingsValue } = useSettings();
 
   useEffect(() => {
+    const u = window.atob(
+      new URLSearchParams(document.location.search).get("input") ?? "",
+    );
+    setInput(u);
+    setOutput(u);
+  }, []);
+
+  useEffect(() => {
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(output, "image/svg+xml");
     const elements = svgDoc.querySelectorAll("*");
@@ -82,6 +90,16 @@ function App() {
     transformAndSetSvg();
   }, [settings, output]);
 
+  const onInput = (e: any) => {
+    const params = new URLSearchParams();
+    params.append("input", window.btoa(e.target.value));
+    const queryString = params.toString();
+    const newUrl = `${window.location.pathname}?${queryString}`;
+    window.history.replaceState(null, "", newUrl);
+    setInput(e.target.value);
+    setOutput(e.target.value);
+  };
+
   return (
     <div className="flex flex-col items-center justify-start w-full min-h-screen bg-primary/90">
       <Settings settings={settings} setSettingsValue={setSettingsValue} />
@@ -89,10 +107,8 @@ function App() {
         className={`grid ${settings.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
       >
         <textarea
-          onChange={(e) => {
-            setInput(e.target.value);
-            setOutput(e.target.value);
-          }}
+          defaultValue={input}
+          onChange={onInput}
           spellCheck={false}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
         />
