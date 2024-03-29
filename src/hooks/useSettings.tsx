@@ -5,6 +5,7 @@ export type Settings = {
   removeIds: boolean;
   removeClasses: boolean;
   removeSizing: boolean;
+  concatTags: boolean;
   preview: boolean;
   react: boolean;
 };
@@ -17,6 +18,7 @@ const useSettings = () => {
     removeSizing: true,
     preview: true,
     react: true,
+    concatTags: true,
   });
 
   const setSettingsValue = (key: keyof Settings, value: boolean) => {
