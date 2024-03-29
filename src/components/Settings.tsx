@@ -20,7 +20,7 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
 
 const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
   return (
-    <nav className="flex flex-row gap-8 p-4 w-full">
+    <nav className="flex flex-row gap-8 p-4 w-full flex-wrap">
       {Object.entries(settings).map(([key, value]) => (
         <div className="flex items-center space-x-2" key={key}>
           <Switch
