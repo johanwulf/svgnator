@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export type Settings = {
   format: boolean;
@@ -8,22 +8,43 @@ export type Settings = {
   concatTags: boolean;
   preview: boolean;
   react: boolean;
+  saveSettings: boolean;
+};
+
+const DEFAULT_SETTINGS = {
+  format: true,
+  removeIds: true,
+  removeClasses: true,
+  removeSizing: true,
+  preview: true,
+  react: true,
+  concatTags: true,
+  saveSettings: false,
 };
 
 const useSettings = () => {
-  const [settings, setSettings] = useState<Settings>({
-    format: true,
-    removeIds: true,
-    removeClasses: true,
-    removeSizing: true,
-    preview: true,
-    react: true,
-    concatTags: true,
+  const [settings, setSettings] = useState<Settings>(() => {
+    const savedSettings = localStorage.getItem("settings");
+    return savedSettings ? JSON.parse(savedSettings) : DEFAULT_SETTINGS;
   });
 
   const setSettingsValue = (key: keyof Settings, value: boolean) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    setSettings((prev) => {
+      const updatedSettings = { ...prev, [key]: value };
+      if (prev.saveSettings) {
+        localStorage.setItem("settings", JSON.stringify(updatedSettings));
+      }
+      return updatedSettings;
+    });
   };
+
+  useEffect(() => {
+    if (settings.saveSettings) {
+      localStorage.setItem("settings", JSON.stringify(settings));
+    } else {
+      localStorage.removeItem("settings");
+    }
+  }, [settings]);
 
   return {
     settings,

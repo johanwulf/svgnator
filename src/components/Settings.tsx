@@ -15,6 +15,7 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
   removeClasses: "Remove classes",
   removeIds: "Remove IDs",
   concatTags: "Concatenate tags",
+  saveSettings: "Save settings in local storage",
 };
 
 const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
