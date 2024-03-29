@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import beautify from "js-beautify";
-
 import "./App.css";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import ColorBar from "./components/ColorBar";
+import useConfig from "./hooks/useConfig";
+import Settings from "./components/Settings";
 
 function App() {
   const [value, setValue] = useState("");
-  const [format, setFormat] = useState(false);
-  const [preview, setPreview] = useState(false);
   const [colors, setColors] = useState<string[]>([]);
+  const { config, setConfigValue } = useConfig();
 
   const sanitizeSvg = (svg: string) => {
     if (svg.length === 0) return "";
@@ -20,6 +18,7 @@ function App() {
       .replace(/class="[^"]*"/, "")
       .replace(/width="[^"]*"/, "")
       .replace(/height="[^"]*"/, "")
+      .replace(/><\/path>/g, "/>")
       .replace("  ", "");
     return sanitized;
   };
@@ -43,43 +42,9 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-start w-full min-h-screen bg-primary/90">
-      <nav className="flex flex-row gap-8 p-4 w-full">
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="airplane-mode"
-            className="dark"
-            onClick={() => setFormat(!format)}
-            checked={format}
-          />
-          <Label htmlFor="airplane-mode" className="text-primary-foreground">
-            Format code
-          </Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="airplane-mode"
-            className="dark"
-            onClick={() => setPreview(!preview)}
-            checked={preview}
-          />
-          <Label htmlFor="airplane-mode" className="text-primary-foreground">
-            Preview SVG
-          </Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="airplane-mode"
-            className="dark"
-            onClick={() => setPreview(!preview)}
-            checked={preview}
-          />
-          <Label htmlFor="airplane-mode" className="text-primary-foreground">
-            React Component
-          </Label>
-        </div>
-      </nav>
+      <Settings config={config} setConfigValue={setConfigValue} />
       <div
-        className={`grid ${preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
+        className={`grid ${config.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
       >
         <textarea
           onChange={(e) => setValue(e.target.value)}
@@ -88,7 +53,7 @@ function App() {
         />
         <textarea
           value={
-            format
+            config.format
               ? beautify.html(sanitizeSvg(value), { indent_size: 4 })
               : sanitizeSvg(value)
           }
@@ -96,7 +61,7 @@ function App() {
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none"
           readOnly
         />
-        {preview && (
+        {config.preview && (
           <div
             className="flex items-center justify-center bg-white rounded-xl p-8"
             dangerouslySetInnerHTML={{ __html: sanitizeSvg(value) }}
