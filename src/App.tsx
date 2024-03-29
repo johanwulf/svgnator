@@ -6,6 +6,11 @@ import prettier from "prettier";
 import babel from "prettier/plugins/babel";
 import estree from "prettier/plugins/estree";
 
+const REACT_TEMPLATE = `const svg = () => {
+CODE
+}
+`;
+
 const transform = async (settings: any, svg: string) => {
   let obj = svg;
 
@@ -16,6 +21,7 @@ const transform = async (settings: any, svg: string) => {
   if (settings.react) {
     obj = obj.replace(/class=/g, "className=");
     obj = obj.replace(/xmlns:xlink="http:\/\/www\.w3\.org\/1999\/xlink"/g, "");
+    obj = REACT_TEMPLATE.replace("CODE", obj);
   }
 
   if (settings.removeClasses) {
@@ -99,7 +105,7 @@ function App() {
         {settings.preview && (
           <div
             className="flex items-center justify-center bg-white rounded-xl p-8"
-            dangerouslySetInnerHTML={{ __html: transformed }}
+            dangerouslySetInnerHTML={{ __html: output }}
           />
         )}
       </div>
