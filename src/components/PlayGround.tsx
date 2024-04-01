@@ -37,20 +37,20 @@ const PlayGround = ({ settings, input, output, onInput }: PlayGroundProps) => {
 
   return (
     <div
-      className={`grid ${settings.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full`}
+      className={`grid ${settings.preview ? "grid-cols-3" : "grid-cols-2"} flex-1 gap-2 px-2 pb-2 w-full bg-primary-foreground`}
     >
       <textarea
         defaultValue={input}
         onChange={onInput}
         spellCheck={false}
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
+        className="px-4 py-2 bg-secondary text-secondary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       />
       <textarea
         value={transformed}
         spellCheck={false}
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none"
+        className="px-4 py-2 bg-secondary text-secondary-foreground rounded-xl resize-none outline-none"
         readOnly
       />
       {settings.preview && (

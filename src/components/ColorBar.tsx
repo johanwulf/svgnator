@@ -24,7 +24,7 @@ const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
   }
 
   return (
-    <div className="fixed flex flex-row w-auto h-auto bottom-4 mx-auto bg-white rounded items-center gap-4 p-4">
+    <div className="fixed flex flex-row w-auto h-auto bottom-4 mx-auto bg-primary rounded items-center gap-4 p-4">
       {colors.map((c, idx) => (
         <div className="" key={idx}>
           <Button
@@ -49,7 +49,9 @@ const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
           )}
         </div>
       ))}
-      <Button onClick={onReset}>Reset colors</Button>
+      <Button onClick={onReset} variant="destructive">
+        Reset colors
+      </Button>
     </div>
   );
 };

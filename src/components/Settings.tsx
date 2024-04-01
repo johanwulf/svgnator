@@ -1,6 +1,7 @@
 import { Settings as S } from "@/hooks/useSettings";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ThemeToggle } from "./ThemeToggle";
 
 type SettingsProps = {
   settings: S;
@@ -19,20 +20,22 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
 
 const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
   return (
-    <nav className="flex flex-row gap-8 p-4 w-full flex-wrap">
-      {Object.entries(settings).map(([key, value]) => (
-        <div className="flex items-center space-x-2" key={key}>
-          <Switch
-            id={key}
-            className="dark"
-            onCheckedChange={(val) => setSettingsValue(key as keyof S, val)}
-            checked={value}
-          />
-          <Label htmlFor={key} className="text-primary-foreground">
-            {SETTINGS_LABEL_MAP[key as keyof S]}
-          </Label>
-        </div>
-      ))}
+    <nav className="flex p-4 w-full flex-wrap justify-between items-center bg-primary-foreground">
+      <div className="flex flex-wrap gap-8 p-4">
+        {Object.entries(settings).map(([key, value]) => (
+          <div className="flex items-center space-x-2" key={key}>
+            <Switch
+              id={key}
+              onCheckedChange={(val) => setSettingsValue(key as keyof S, val)}
+              checked={value}
+            />
+            <Label htmlFor={key} className="text-secondary-foreground">
+              {SETTINGS_LABEL_MAP[key as keyof S]}
+            </Label>
+          </div>
+        ))}
+      </div>
+      <ThemeToggle />
     </nav>
   );
 };
