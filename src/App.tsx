@@ -45,7 +45,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen bg-primary/90">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen bg-secondary/90">
       <Settings settings={settings} setSettingsValue={setSettingsValue} />
       <PlayGround
         settings={settings}
