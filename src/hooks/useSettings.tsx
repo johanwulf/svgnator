@@ -5,7 +5,6 @@ export type Settings = {
   removeIds: boolean;
   removeClasses: boolean;
   removeSizing: boolean;
-  concatTags: boolean;
   preview: boolean;
   react: boolean;
   saveSettings: boolean;
@@ -18,7 +17,6 @@ const DEFAULT_SETTINGS = {
   removeSizing: true,
   preview: true,
   react: true,
-  concatTags: true,
   saveSettings: false,
 };
 

@@ -33,10 +33,6 @@ const transform = async (settings: any, svg: string) => {
     obj = obj.replace(/width="[^"]*"/, "").replace(/height="[^"]*"/, "");
   }
 
-  if (settings.concatTags) {
-    obj = obj.replace(/><\/[^>]*>/g, " />");
-  }
-
   if (settings.format) {
     obj = await prettier.format(obj, {
       semi: false,
@@ -92,12 +88,27 @@ function App() {
 
   const onInput = (e: any) => {
     const params = new URLSearchParams();
-    params.append("input", window.btoa(e.target.value));
+    params.append("input", window.btoa(e));
     const queryString = params.toString();
     const newUrl = `${window.location.pathname}?${queryString}`;
     window.history.replaceState(null, "", newUrl);
-    setInput(e.target.value);
-    setOutput(e.target.value);
+    setInput(e);
+    setOutput(e);
+  };
+
+  const handleDrop = async (e: any) => {
+    e.preventDefault();
+    const dropped = e.dataTransfer.files;
+    if (dropped.length === 1) {
+      const [file] = dropped;
+      if (file.type === "image/svg+xml") {
+        const reader = new FileReader();
+        reader.onload = async (e: any) => {
+          onInput(e.target.result);
+        };
+        reader.readAsText(file);
+      }
+    }
   };
 
   return (
@@ -108,9 +119,11 @@ function App() {
       >
         <textarea
           defaultValue={input}
-          onChange={onInput}
+          onChange={(e) => onInput(e.target.value)}
           spellCheck={false}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop}
         />
         <textarea
           value={transformed}
