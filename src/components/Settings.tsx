@@ -21,7 +21,7 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
 const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
   return (
     <nav className="flex p-4 w-full flex-wrap justify-between items-center bg-primary-foreground">
-      <div className="flex flex-wrap gap-8 p-4">
+      <div className="flex flex-wrap gap-8">
         {Object.entries(settings).map(([key, value]) => (
           <div className="flex items-center space-x-2" key={key}>
             <Switch
@@ -35,7 +35,9 @@ const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
           </div>
         ))}
       </div>
-      <ThemeToggle />
+      <div className="flex flex-wrap gap-8">
+        <ThemeToggle />
+      </div>
     </nav>
   );
 };

@@ -28,12 +28,12 @@ const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
       {colors.map((c, idx) => (
         <div className="" key={idx}>
           <Button
-            className="w-8 h-8 border border-black"
+            className={`w-8 h-8 border border-black ${active === idx ? "animate-pulse" : ""}`}
             style={{ background: c }}
             onClick={() => handleColorBoxClick(idx)}
           />
           {active === idx && (
-            <div ref={colorPickerRef} className="absolute bottom-[120%]">
+            <div ref={colorPickerRef} className="absolute bottom-[105%]">
               <HexColorPicker
                 color={c}
                 onChange={(color) => onChange(c, color)}
