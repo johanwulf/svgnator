@@ -55,7 +55,7 @@ const PlayGround = ({ settings, input, output, onInput }: PlayGroundProps) => {
       />
       {settings.preview && (
         <div
-          className="flex items-center justify-center bg-white rounded-xl p-8"
+          className="flex items-center justify-center bg-primary-foreground rounded-xl p-8"
           dangerouslySetInnerHTML={{ __html: output }}
         />
       )}
