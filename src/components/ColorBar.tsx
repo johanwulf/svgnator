@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { HexColorPicker } from "react-colorful";
+import useOnClickOutside from "@/hooks/useOnClickOutside";
 
 type ColorBarProps = {
   colors: string[];
@@ -10,14 +11,13 @@ type ColorBarProps = {
 
 const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
   const [active, setActive] = useState(-1);
+  const colorPickerRef = useRef(null);
 
   const handleColorBoxClick = useCallback((idx: number) => {
     setActive(idx);
   }, []);
 
-  const handleClosePicker = useCallback(() => {
-    setActive(-1);
-  }, []);
+  useOnClickOutside(colorPickerRef, () => setActive(-1));
 
   if (!(colors.length > 0)) {
     return <></>;
@@ -33,14 +33,7 @@ const ColorBar = ({ colors, onChange, onReset }: ColorBarProps) => {
             onClick={() => handleColorBoxClick(idx)}
           />
           {active === idx && (
-            <div className="absolute bottom-[120%]">
-              <Button
-                variant="outline"
-                className="absolute z-20 w-5 h-5 right-[-1.25rem] p-0"
-                onClick={handleClosePicker}
-              >
-                X
-              </Button>
+            <div ref={colorPickerRef} className="absolute bottom-[120%]">
               <HexColorPicker
                 color={c}
                 onChange={(color) => onChange(c, color)}
