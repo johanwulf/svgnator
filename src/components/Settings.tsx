@@ -14,7 +14,6 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
   removeSizing: "Remove sizing",
   removeClasses: "Remove classes",
   removeIds: "Remove IDs",
-  concatTags: "Concatenate tags",
   saveSettings: "Save settings in local storage",
 };
 
