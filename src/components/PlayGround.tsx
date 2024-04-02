@@ -41,7 +41,7 @@ const PlayGround = ({ settings, input, output, onInput }: PlayGroundProps) => {
     >
       <textarea
         defaultValue={input}
-        onChange={onInput}
+        onChange={(e) => onInput(e.target.value)}
         spellCheck={false}
         className="px-4 py-2 bg-secondary text-secondary-foreground rounded-xl resize-none outline-none border-solid border-1 border-white"
         onDragOver={(e) => e.preventDefault()}

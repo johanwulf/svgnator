@@ -34,9 +34,9 @@ function App() {
     setColors([...new Set(fillColors)]);
   }, [output]);
 
-  const onInput = (e: any) => {
-    setInput(e.target.value);
-    setOutput(e.target.value);
+  const onInput = (e: string) => {
+    setInput(e);
+    setOutput(e);
   };
 
   return (
