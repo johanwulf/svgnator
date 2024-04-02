@@ -35,13 +35,8 @@ function App() {
   }, [output]);
 
   const onInput = (e: any) => {
-    const params = new URLSearchParams();
-    params.append("input", window.btoa(e));
-    const queryString = params.toString();
-    const newUrl = `${window.location.pathname}?${queryString}`;
-    window.history.replaceState(null, "", newUrl);
-    setInput(e);
-    setOutput(e);
+    setInput(e.target.value);
+    setOutput(e.target.value);
   };
 
   return (
