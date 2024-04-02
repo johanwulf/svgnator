@@ -2,6 +2,8 @@ import { Settings as S } from "@/hooks/useSettings";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "./ThemeToggle";
+import { Button } from "./ui/button";
+import { useModal } from "./ModalStack";
 
 type SettingsProps = {
   settings: S;
@@ -19,6 +21,7 @@ const SETTINGS_LABEL_MAP: Record<keyof S, string> = {
 };
 
 const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
+  const { openModal } = useModal();
   return (
     <nav className="flex p-4 w-full flex-wrap justify-between items-center bg-primary-foreground">
       <div className="flex flex-wrap gap-8">
@@ -36,6 +39,30 @@ const Settings = ({ settings, setSettingsValue }: SettingsProps) => {
         ))}
       </div>
       <div className="flex flex-wrap gap-8">
+        <Button
+          onClick={() =>
+            openModal({
+              title: "Confirmation",
+              message: "Are you sure?",
+              onClose: () => console.log("closed"),
+              element: (
+                <Button
+                  onClick={() =>
+                    openModal({
+                      title: "Confirmation",
+                      message: "Are you sure?",
+                      onClose: () => console.log("closed"),
+                    })
+                  }
+                >
+                  Theme
+                </Button>
+              ),
+            })
+          }
+        >
+          Theme
+        </Button>
         <ThemeToggle />
       </div>
     </nav>
