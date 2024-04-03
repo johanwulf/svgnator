@@ -6,6 +6,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet";
+import { Button } from "./ui/button";
+import { ArrowLeft } from "lucide-react";
 
 interface Modal {
   title: string;
@@ -33,7 +35,11 @@ export const ModalProvider = ({ children }: { children: any }) => {
     setModals((prevModals) => [...prevModals, modal]);
   };
 
-  const closeTopModal = () => {
+  const closeAll = () => {
+    setModals([]);
+  };
+
+  const closeLast = () => {
     setModals((prevModals) => prevModals.slice(0, -1));
   };
 
@@ -41,9 +47,20 @@ export const ModalProvider = ({ children }: { children: any }) => {
     <ModalContext.Provider value={{ modals, openModal }}>
       {children}
       {modals.map((modal, index) => (
-        <Sheet open={index === modals.length - 1} onOpenChange={closeTopModal}>
+        <Sheet open={index === modals.length - 1} onOpenChange={closeAll}>
           <SheetContent>
             <SheetHeader>
+              {modals.length > 1 && (
+                <Button
+                  onClick={closeLast}
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-4 top-4 h-4 w-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span className="sr-only">Go back</span>
+                </Button>
+              )}
               <SheetTitle>{modal.title}</SheetTitle>
               <SheetDescription>{modal.message}</SheetDescription>
             </SheetHeader>
