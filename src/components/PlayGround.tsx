@@ -10,7 +10,7 @@ type PlayGroundProps = {
 };
 
 const PlayGround = ({ settings, input, output, onInput }: PlayGroundProps) => {
-  const [transformed, setTransformed] = useState("");
+  const [transformed, setTransformed] = useState<string | boolean>("");
 
   useEffect(() => {
     const transformAndSetSvg = async () => {
@@ -48,7 +48,13 @@ const PlayGround = ({ settings, input, output, onInput }: PlayGroundProps) => {
         onDrop={handleDrop}
       />
       <textarea
-        value={transformed}
+        value={
+          typeof transformed === "string"
+            ? transformed
+            : input.length > 0
+              ? "Invalid input"
+              : ""
+        }
         spellCheck={false}
         className="px-4 py-2 bg-secondary text-secondary-foreground rounded-xl resize-none outline-none"
         readOnly

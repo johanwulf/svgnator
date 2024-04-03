@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import prettier from "prettier";
 import babel from "prettier/plugins/babel";
 import estree from "prettier/plugins/estree";
+import { XMLParser, XMLValidator } from "fast-xml-parser";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,6 +16,10 @@ CODE
 
 export async function transform(settings: any, svg: string) {
   let obj = svg;
+
+  if (XMLValidator.validate(svg) !== true) {
+    return false;
+  }
 
   if (settings.removeIds) {
     obj = obj.replace(/id="[^"]*"/g, "");
